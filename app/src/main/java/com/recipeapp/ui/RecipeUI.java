@@ -73,7 +73,7 @@ public class RecipeUI {
 
                 System.out.print("Main Ingredients: ");
                 for(int i = 0; i < recipe.getIngredients().size(); i++){
-                    System.out.print(recipe.getIngredients().get(i).getName());
+                    System.out.print(recipe.getIngredients().get(i).getName() + ", ");
                 }
                 System.out.println();
             }
