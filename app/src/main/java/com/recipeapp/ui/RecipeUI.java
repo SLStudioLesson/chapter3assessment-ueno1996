@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.recipeapp.datahandler.CSVDataHandler;
+import com.recipeapp.datahandler.DataHandler;
+import com.recipeapp.model.Recipe;
+
 public class RecipeUI {
     private BufferedReader reader;
     private DataHandler dataHandler;
@@ -33,6 +37,7 @@ public class RecipeUI {
 
                 switch (choice) {
                     case "1":
+                        displayRecipes();
                         break;
                     case "2":
                         break;
@@ -49,5 +54,31 @@ public class RecipeUI {
                 System.out.println("Error reading input from user: " + e.getMessage());
             }
         }
+    }
+
+    private void displayRecipes() throws IOException{
+        /* CSVDateHandlerからリストを受け取り、ArrayList<Recipe> recipesに代入する
+         * 取得したリストをfor文にて、メニューの表示
+         * 具材の表示をおこなっていく。
+         */
+
+        ArrayList<Recipe> recipes = dataHandler.readData();
+        if(recipes.size() > 1){
+            System.out.println("Recipes:");
+            for(Recipe recipe : recipes){
+                System.out.println("-----------------------------------");
+                System.out.println("Recipe Name: " + recipe.getName());
+
+                System.out.print("Main Ingredients: ");
+                for(int i = 0; i < recipe.getIngredients().size(); i++){
+                    System.out.print(recipe.getIngredients().get(i).getName());
+                }
+                System.out.println();
+            }
+        }
+        else{
+            System.out.println("No recipes available.");
+        }
+        
     }
 }
