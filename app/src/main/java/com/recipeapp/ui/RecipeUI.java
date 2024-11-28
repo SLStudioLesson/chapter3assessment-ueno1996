@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.recipeapp.datahandler.CSVDataHandler;
 import com.recipeapp.datahandler.DataHandler;
+import com.recipeapp.model.Ingredient;
 import com.recipeapp.model.Recipe;
 
 public class RecipeUI {
@@ -40,6 +41,7 @@ public class RecipeUI {
                         displayRecipes();
                         break;
                     case "2":
+                        addNewrecipe();
                         break;
                     case "3":
                         break;
@@ -78,6 +80,50 @@ public class RecipeUI {
         }
         else{
             System.out.println("No recipes available.");
+        }
+        
+    }
+    /* 
+     * ユーザーからのレシピの入力を受ける。
+     * doneが入力されるまで、while文で具材の入力受付と具材リストに追加を繰りかえす。
+     * doneの判定はif文でおこなう。
+     * 入力が終えた後に、CSVDateHandlerのwriteDateメソッドに
+     * レシピ名と具材リストを持った、Recipeオブジェクトを引数として渡す。
+     */
+
+    private void addNewrecipe() throws IOException{
+
+        try{
+
+            System.out.println("Adding a new recipe.");
+            reader = new BufferedReader(new InputStreamReader(System.in));
+            
+            //メニューの入力
+            System.out.print("Enter recipe name: ");
+            String menuName = reader.readLine();
+    
+            System.out.println("Enter ingredients (type 'done' when finished):");
+    
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+    
+            while (true) {
+                
+                System.out.print("Ingredient: ");
+                String ingredientName = reader.readLine();
+    
+                if(ingredientName.equals("done")){
+                    break;
+                }
+    
+                ingredients.add(new Ingredient(ingredientName));
+            }
+
+            dataHandler.writeData(new Recipe(menuName, ingredients));
+    
+            System.out.println("Recipe added successfully.");
+
+        }catch(IOException ex){
+            System.out.println(ex.getMessage());
         }
         
     }

@@ -1,7 +1,9 @@
 package com.recipeapp.datahandler;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -62,8 +64,30 @@ public class CSVDataHandler implements DataHandler{
         
         return null;
     }
+
+    /* 
+     * 引数で受け取ったRecipeオブジェクトでは、
+     * 具材がリストで受け取っているので、for文で要素を取り出し、String型に代入（getName()を使用）
+     * レシピ名と具材名を一つの文字列にまとめ、ファイルに書き込む。
+     */
     
     public void writeData(Recipe recipe) throws IOException{
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(this.filePath, true))){
+
+            String ingredients = "";
+            for(Ingredient ingredient : recipe.getIngredients()){
+
+                ingredients += ingredient.getName() + ",";
+            }
+
+            String newRecipe = recipe.getName() + "," + ingredients;
+            writer.write(newRecipe);
+            writer.newLine();
+
+        }catch(IOException ex){
+            System.out.println("Failed to add new recipe: " + ex.getMessage());
+        }
 
     }
 
